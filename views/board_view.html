@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">  
+</head>
+<body>
+    <h2>게시판 view 페이지 입니다</h2>
+    {%for item in list%}
+    <ul>
+        <li>글 제목</li>
+        <li>{{item.subject}}</li>
+    </ul>
+    <ul>
+        <li>작성자</li>
+        <li>{{item.board_name}}</li>
+    </ul>
+    <ul>
+        <li>
+            {{item.content}}
+        </li>
+    </ul>
+    
+        <a href="/list" class="write_btn">리스트가기</a>
+        <a href="/modify?idx={{item.idx}}" class="write_btn">수정하기</a>
+        <a href="/delete?idx={{item.idx}}" class="write_btn">삭제하기</a>
+    {% endfor %}
+</body>
+</html>
+
+
+<!--
+    result값 받아와서 각각의 ul li에 뿌리기
+
+-->

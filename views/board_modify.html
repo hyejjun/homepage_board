@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    {% for item in list%}
+    <form action="/modify?idx={{item.idx}}" method="post">
+        <h2>게시판 글 수정 페이지 입니다</h2>
+        
+        <ul>
+            <li> {{item.idx}}글 제목</li>
+            <li><input type="text" name="board_subject" value="{{item.subject}}"></li>
+        </ul>
+        <ul>
+            <li>작성자</li>
+            <li><input type="text" name="board_name" value="{{item.board_name}}"></li>
+        </ul>
+        <ul>
+            <li>
+                <textarea name="board_content" cols="30" rows="10">{{item.content}}</textarea>
+            </li>
+        </ul>
+        {% endfor %}
+        <input type="submit" value="글 수정" class="write_btn">
+        <a href="/list" class="write_btn">글목록</a>
+    </form>
+</body>
+
+</html>

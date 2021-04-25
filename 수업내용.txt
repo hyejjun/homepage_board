@@ -1,0 +1,187 @@
+과제
+게시판 만들기
+
+리스트 만들기
+1. 게시판 리스트 (작성)
+2. 게시글 보기 (삭제, 수정)
+3. 게시글 수정
+4. 게시글 작성 <- 회원가입처럼하는거 (db에 저장하는거)
+
+
+----------------------------------------------------
+
+nunjucks 구문
+- for문 if문 정도만
+
+
+{% for 변수 in 배열}
+      {{변수.요소}}
+{% endfor %}
+
+-------------------------------------------------
+rend나 send 중 하나만 써야함
+--------------------------------------------------
+css 사용하는 방법
+server.js에서
+app.use(express.static('css'))  
+
+express에게 정적파일들은 (css)안에 있는 내용으로 만들겠다는 뜻 
+- css라는 폴더를 쓰겠다는것
+정적 파일 : css,js,image, 동영상
+
+
+html 을 server.js에서 가져와서 뿌린거라서 이렇게만 쓰면 css 적용안됨
+server.js에서 마찬가지로 css를 가져와야함
+
+<link rel="stylesheet" href="../css/index.css">
+이건 왜 안될까?  
+server.js 에 html 전체 내용이 온다고 생각해야됨 - 그래서 css의 위치 접근도 server.js 기준으로 해야한다.
+server.js 기준 css는 public 폴더가 생략됨 - 그 이유는 정적파일에 public 라는걸 내가 쓰겠다고 했기때문임
+---------------------------------------------------------------------------------------------------------------
+
+연결하는 부분
+wirte
+view
+html 만들고 server.js에서 get으로 받는 부분 만들어줌
+
+
+---------------------------------------------------------
+
+res.redirect('/list');      //위에 주소까지 /list로 넘겨줌
+
+
+post wirte에서 post하면 
+- db에 내용을 insert 
+- redirect (url값을 바꿔라) 
+- app.get('/list')로 가게됨
+- list 화면 표출
+
+app.post('/write', (req, res) => {
+    console.log(req.body);
+    /*db 내용 처리한 다음에 list.html 넘어가면 된다*/
+    //res.render('list.html');
+    res.redirect('/list');      //위에 주소까지 /list로 넘겨줌
+});
+
+------------------------------------------------------------
+쿼리문에서 데이터 insert 할때
+
+now(); 안넣어도 됨
+
+MariaDB [homepage]> insert into board(subject,board_name,content,hit) values('공지입니다4','관리자', '공지내용입니다아4',0);
+
+today DATETIME DEFAULT CURRENT_TIMESTAMP, <- 이렇게 써줬기 때문!
+
+
+----------------------------------------------------------
+배열에 들어가 있는 모습
+[
+  RowDataPacket {
+    idx: 1,
+    subject: '공지입니다',
+    board_name: '관리자',
+    content: '공지내용입니다아아아',
+    today: 2021-04-23T05:40:03.000Z,
+    hit: 0
+  },
+  RowDataPacket {
+    idx: 2,
+    subject: '공지입니다',
+    board_name: '관리자',
+    content: '공지내용입니다아아아2',
+    today: 2021-04-23T05:41:59.000Z,
+    hit: 0
+  },
+  RowDataPacket {
+    idx: 3,
+    subject: '공지입니다3',
+    board_name: '관리자',
+    content: '공지내용입니다아아32',
+    today: 2021-04-23T05:42:10.000Z,
+    hit: 0
+  },
+  RowDataPacket {
+    idx: 4,
+    subject: '공지입니다4',
+    board_name: '관리자',
+    content: '공지내용입니다아4',
+    today: 2021-04-23T05:42:22.000Z,
+    hit: 0
+  }
+]
+
+
+*******************************************
+nunjucks 구문
+
+<body>
+    {{list}}
+    {% for[변환해주는 값] in [배열] %}
+
+
+
+    {{list}}
+    {% for item in list%}
+        {{}}    // 출력문
+    {% endfor %}
+</body>
+
+반복시 마다 tr생성하고 출력시 마다 하나씩 값을 td에 넣어주게끔 하는 방법을 사용한다.
+{% for item in list%}
+<tr>
+  <td> {{item.idx}} </td>
+  <td> {{item.subject}} </td>
+  <td> {{item.board_name}} </td>
+  <td> {{item.today}} </td>
+  <td> {{item.hit}} </td>
+</tr>
+{% endfor %}
+
+
+----------------------------------------------------------------
+Fri Apr 23 2021 14:42:22 GMT+0900 (대한민국 표준시) 
+이렇게 나오는걸 고치는 작업 해야함
+
+
+select idx, subject, board_name, content, today, hit from board;
+
+select idx, subject, board_name, content, today as date, hit from board; // 일회성으로 today 를 date로 바꾸기
+
+data 포맷을 바꿀거야
+
+select idx, subject, board_name, content, date_format(today,'%Y-%m-%d'), hit from board;
+
+select idx, subject, board_name, content, date_format(today,'%Y-%m-%d') as today, hit from board;
+
+
+
+================================================================
+
+<td> <a href="/view?idx={{item.idx}}"> {{item.subject}} </a> </td>
+
+/view URI 값
+? 뒤에부터 get값
+
+localhost:3000/view>idx=1 로 url 전체를 이동시킨다고 봐야할듯
+
+
+
+
+
+--------------------------------------------------
+
+let title = req.body.board_subject;
+    let name = req.body.board_name;
+    let content = req.body.board_content;
+    let sql_write = `INSERT INTO board(subject,board_name,content,hit) values('${title}','${name}','${content}',0)`;
+
+    connection.query(sql_write,(error,results)=>{
+        if(error){
+            console.log(error);
+        }else{
+            console.log("쿼리문 성공");
+            res.redirect('/list');
+        }
+    });
+
+

@@ -1,0 +1,32 @@
+/*hello world*/
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.board{
+    width: 800px;
+}
+
+.board>table>tr{
+    text-align: center;
+}
+
+.board>table>tr>td{
+    border: 1px solid #ddd;
+    width: 25%;
+}
+
+.write_btn{
+    display: inline-block;
+    padding: 7px 14px;
+    width: 100px;
+    height: 30px;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 15px;
+    background: black;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
