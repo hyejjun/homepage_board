@@ -69,7 +69,17 @@ app.post('/write', (req, res) => {
 
 
 app.get('/view', (req, res) => {
-    //console.log("view : ",req.query);
+    // 조회수 hit 처리
+    hit = parseInt(req.query.hit)+1 ;
+
+    connection.query(`update board set hit=${hit} where idx=${req.query.idx}`, (error,results)=>{
+        if (error) {
+            console.log(error);
+        } else {        
+            //console.log(results);
+        }
+    });
+
     connection.query(`SELECT * FROM board WHERE idx=${req.query.idx};`, (error, results) => {
         if (error) {
             console.log(error);
@@ -80,7 +90,6 @@ app.get('/view', (req, res) => {
         }
     });
 });
-
 
 
 app.get('/modify', (req, res) => {
