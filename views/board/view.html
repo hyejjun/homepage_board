@@ -1,0 +1,24 @@
+{% include "../layout/top.html" %}
+
+<h2>게시판 view 페이지 입니다</h2>
+    {%for item in list%}
+    <ul>
+        <li>글 제목</li>
+        <li>{{item.subject}}</li>
+    </ul>
+    <ul>
+        <li>작성자</li>
+        <li>{{item.board_name}}</li>
+    </ul>
+    <ul>
+        <li>본문</li>
+        <li class="content">
+            {{item.content}}
+        </li>
+    </ul>
+        <a href="./list" class="write_btn">리스트가기</a>
+        <a href="./modify?idx={{item.idx}}" class="write_btn">수정하기</a>
+        <a href="./delete?idx={{item.idx}}" class="write_btn">삭제하기</a>
+    {% endfor %}
+
+{% include "../layout/bottom.html" %}

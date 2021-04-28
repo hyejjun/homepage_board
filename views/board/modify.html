@@ -1,0 +1,23 @@
+{% include "../layout/top.html" %}
+<!--start-->
+<h2>게시판 수정 페이지 입니다</h2>
+{% for item in list %}
+<form action="/board/modify?idx={{item.idx}}" method="post">
+    <ul>
+        <li>제목</li>
+        <li><input type="text" name="subject" value="{{item.subject}}"></li>
+    </ul>
+    <ul>
+        <li>작성자</li>
+        <li><input type="text" name="board_name" value="{{item.board_name}}"></li>
+    </ul>
+    <ul>
+        <li><textarea name="content" cols="30" rows="10">{{item.content}}</textarea></li>
+    </ul>
+{% endfor %}
+    <input type="submit" value="작성완료">
+    <a href="./list">글 목록</a>
+</form>
+
+<!--end-->
+{% include "../layout/bottom.html" %}
